@@ -33,7 +33,41 @@ def add(task: Task):
 
 @task_router.put('/',status_code=status.HTTP_200_OK)
 # def update(index: int, task: str = Body(), status: StatusType = Body()):
-def update(index: int, task: Task):
+# def update(index: int, task: Task):
+def update(index: int, task: Task = Body(
+    openapi_examples={
+        "example1": {
+            "summary": '1 example',
+            "value": {
+                "id": 123,
+                "name": "Salvar al mundo",
+                "description": "Hola mundo",
+                "tag": ["tag1", "tag2"]
+            }
+        },
+        "example2": {
+            "summary": '2 example',
+            "value": {
+                "id": 1234,
+                "name": "Salvar al mundo 2",
+                "description": "Hola mundo 2",
+                "tag": ["tag1", "tag2", "tag3"]
+            }
+        }
+    }
+
+#    examples= [
+#         {
+#            "id": 1234,
+#            "name": "salvar el mundo 2",
+#            "description": "hola mundo 2",
+#            "tag": ["Tag1", "Tag2", "Tag3"]
+#        }
+#    ]
+
+
+)):
+
 #    task_list[index] = {
 #        'task' : task.name
 #        'status' : task.status

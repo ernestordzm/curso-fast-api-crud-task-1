@@ -43,7 +43,33 @@ class Task(MyBaseModel):
     user: User
 #    tags: List[str] = []
     tags: set[str] = set()
-    
+
+    model_config = {
+        "json_schema_extra": {
+            "examples": [
+                {
+                    "id": 123,
+                    "name": "salvar el mundo",
+                    "description": "hola mundo",
+                    "status": StatusType.PENDING,
+                    "tag": ["Tag1", "Tag2", "Tag3"],
+                    "catogory": {
+                        "id": 1234,
+                        "name": "Cate 1"
+                    },
+                    "user": {
+                        "id": 12,
+                        "name": "Ernesto",
+                        "email": "admin@admin.com",
+                        "surname": "Rodriguez",
+                        "website": "https://google.com"
+                    }
+                }
+            ]
+        }
+    }
+
+
     @validator('name')
     def name_alphanumeric_and_whitespace(cls, v):
         if not v.replace(' ', '').isalnum():

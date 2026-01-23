@@ -3,6 +3,7 @@
 from fastapi import FastAPI, APIRouter, Query, Path
 #from fastapi import APIRouter
 from task import task_router
+from myupload import upload_router
 
 app = FastAPI()
 router = APIRouter()
@@ -17,7 +18,7 @@ def page(page: int = Query(1, ge=1, le=20, title='Pagina...'), size: int = Query
     return {'page': page}
 
 @app.get('/e_phone')
-def phone(phone: str = Query(regex=r"^(\+52)?\d{10}$")):
+def phone(phone: str = Query(regex=r"^(\+52)?\d{10}$", example="+52 1234-5678")):
     return {'phone': phone}
 
 @app.get('/ep_phone/{phone}')
@@ -26,3 +27,5 @@ def phone(phone: str = Path(regex=r"^(\+52)?\d{10}$")):
 
 app.include_router(router)
 app.include_router(task_router, prefix='/task')
+
+app.include_router(upload_router, prefix='/upload')
