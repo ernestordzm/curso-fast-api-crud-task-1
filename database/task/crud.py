@@ -10,16 +10,16 @@ from schemes import Task
 def getAll(db: Session):
 #    task = db.query(models.Task).filter(models.Task.id == id).first()
 
-    task = db.query(models.Task).get(2)
-    tag1 = db.query(models.Tag).get(1)
+    # task = db.query(models.Task).get(2)
+    # tag1 = db.query(models.Tag).get(2)
 
     # tag1.tasks.append(task)
-    task.tags.append(tag1)
+    # task.tags.append(tag1)
     # task.tags.remove(tag1)
 
     # db.add(task)
-    db.add(tag1)
-    db.commit()
+    # db.add(tag1)
+    # db.commit()
     
     # print(task.tags)
 

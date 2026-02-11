@@ -83,6 +83,16 @@ def add(task: Task = Body(
 #    })
     return {'tasks': crud.create(task, db=db)}
 
+
+
+@task_router.post('/form-create', status_code=status.HTTP_201_CREATED)
+# def add(task: str = Body()):
+def addForm(task: Task = Depends(Task.as_form), db: Session = Depends(get_database_session)):
+
+    return {'tasks': crud.create(task, db=db)}
+
+
+
 @task_router.put('/{id}',status_code=status.HTTP_200_OK)
 # def update(index: int, task: str = Body(), status: StatusType = Body()):
 # def update(index: int, task: Task):

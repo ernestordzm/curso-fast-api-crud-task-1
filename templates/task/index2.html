@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI</title>
+</head>
+<body>
+    <h1>Hello World</h1>
+
+    <!-- {%if True and True%}
+        Is True
+    {%else%}
+        Not is True
+    {%endif%} -->
+
+    <!-- <ul>
+        {% for e in [1,2,3,4,5] %}
+            <li>{{ e }} {{ loop.length }}</li>
+        {% endfor %}
+    </ul> -->
+
+    <!-- {{ 5 | default('No definido') }} -->
+
+    <!-- {{ '<title>FastAPI</title>'  | escape }} -->
+
+    <!-- {{ 3.141 | int }} -->
+
+    <!-- {{ [1,2,3,4,20,5,6,7,8] | max}} -->
+
+    <!-- {{ 3.141 | round }}
+    {{ 3.5 | round }}
+    {{ 3.49 | round | int}} -->
+
+    <!-- {{ 'Hello FastAPI' | replace('Hello', 'Hi') }} -->
+
+    <!-- {{ ['Hello', 'FastAPI', 'SQLAlchemi'] | join('-') }} -->
+    
+    <!-- <p>{{ 'Hello World' | lower }}</p>
+    <p>{{ 'Hello World' | upper }}</p> -->
+
+    <!-- {{ 'Hello FastAPI' | reverse}}
+
+    {% for e in [1,2,3,4,5,20,6,7] | reverse %}
+        {{ e }}
+    {% endfor%} -->
+
+    <!-- {{ 'Hello FastAPI' | length }} -->
+
+    <!-- {{ [1,200,30,4,-5,6,700,80] | sort(reverse=true) }} -->
+
+    <!-- {% for e in [1,200,30,4,-5,6,700,80,10] | slice(3) %}
+        {{ e }}
+    {% endfor %} -->
+
+    {% set var1 = 'FastAPI' %}
+    {% set var2 = var1 %}
+
+    <!-- {{ var1 }}
+    {{ var2 }} -->
+
+    <hr>
+
+    <!-- <hr>
+
+    {% raw %}
+        var1
+        {{ var1 }}
+         <title>FastAPI</title>
+        <h1>FastAPI</h1>
+    {% endraw %}
+
+     -->
+
+    {% macro suma(v1, v2) %}
+        <p>{{v1}} + {{v2}} = <strong>{{ v1+v2 }}</strong></p>
+    {% endmacro %}
+
+    {{suma(5,4)}}
+
+</body>
+</html>

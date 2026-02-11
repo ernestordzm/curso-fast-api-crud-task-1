@@ -3,6 +3,7 @@
 from enum import Enum
 from typing import Optional, List
 from pydantic import BaseModel, ConfigDict, validator, Field, EmailStr, HttpUrl
+from fastapi import Form
 
 class StatusType(str, Enum):
     DONE = 'done'
@@ -49,6 +50,17 @@ class Task(BaseModel):
     tags: set[str] = set()
 
     model_config = ConfigDict(from_attributes=True)
+
+    @classmethod
+    def as_form(cls, 
+                name: str = Form(),
+                description: str = Form(),
+                status: str = Form(),
+                category_id: str = Form(),
+                user_id: str = Form(),
+                
+                ):
+        return cls(name=name, description=description, status=status, category_id=category_id, user_id=user_id)
 
     class config:
         orm_mode = True
