@@ -1,9 +1,11 @@
 
 
-from fastapi import FastAPI, Depends, APIRouter, Query, Path
+from fastapi import FastAPI, Depends, APIRouter, Query, Path, Request, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
-from fastapi import Request 
+from typing import Optional
+from typing_extensions import Annotated
+
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="templates/")
@@ -49,6 +51,47 @@ def index(request: Request, db: Session = Depends(get_database_session)):
     return templates.TemplateResponse('task/index.html',{"request": request, 'tasks': crud.getAll(db), 'categories': categories})
 
 
+# Depends
+def pagination(page: Optional[int] = 1, limit: Optional[int] = 10):
+    return{'page': page-1, 'limit': limit}
+
+@app.get('/p-task')
+def index(pag:dict=Depends(pagination)):
+    # print(pag.get('limit'))
+    return pag
+# -------------------------------------------------------------------
+
+#Path
+
+def validate_token(token: str = Header()): 
+    if token != 'TOKEN':
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+
+@app.get('/route-protected', dependencies=[Depends(validate_token)])
+def protected_route(index:int):
+    return {'hello': 'FastAPI'}
+
+# -------------------------------------------------------------------
+
+# Var
+CurrentTaskId = Annotated[int, Depends(validate_token)]
+
+@app.get('/route-protected2')
+def protected_route2(CurrentTaskId, index:int):
+    return {'hello': 'FastAPI'}
+
+@app.get('/route-protected3')
+def protected_route3(CurrentTaskId, index:int):
+    return {'hello': 'FastAPI'}
+
+@app.get('/route-protected4')
+def protected_route4(CurrentTaskId, index:int, user_id:int):
+    return {'hello': 'FastAPI'}
+
+# Depends
+
+
+# -------------------------------------------------------------------
 
 app.include_router(router)
 app.include_router(task_router, prefix='/task')
