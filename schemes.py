@@ -2,6 +2,8 @@
 
 from enum import Enum
 from typing import Optional, List
+from datetime import datetime
+
 from pydantic import BaseModel, ConfigDict, validator, Field, EmailStr, HttpUrl
 from fastapi import Form
 
@@ -33,7 +35,22 @@ class User(BaseModel):
     name: str = Field(min_length=5)
     surname: str
     email: EmailStr
-    website: HttpUrl
+    website: str #HttpUrl
+    model_config = ConfigDict(from_attributes=True)
+    # class Config : orm_mode = True
+
+class UserCreate(User):
+    password: str
+
+class UserDB(User):
+    hashed_password: str
+
+class AccessToken(BaseModel):
+    user_id: int
+    access_token: str   
+    expiration_date: datetime
+    model_config = ConfigDict(from_attributes=True)
+    # class config: orm_mode = True
 
 class Task(BaseModel):
     name: str
