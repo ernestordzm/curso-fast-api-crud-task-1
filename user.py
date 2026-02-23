@@ -44,8 +44,11 @@ def register(user: UserCreate, db: Session = Depends(database.get_database_sessi
     db.commit()
     db.refresh
 
-    return userdb
+    # return userdb
 
+    return {
+        'message':  'User created successfully'
+    }
 
 @user_router.delete('/logout', status_code=status.HTTP_200_OK, dependencies = [Depends(authentication.logout) ])
 def logout():

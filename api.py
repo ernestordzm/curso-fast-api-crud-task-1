@@ -44,22 +44,23 @@ Base.metadata.create_all(bind=engine)
 
 
 # Token Sin BD
-# API_KEY_TOKEN = 'SECRET_PASSWORD'
-# api_key_token = APIKeyHeader(name = 'Tokken')
+# API_KEY_TOKEN = 'gdHkg_Zp1fOKG3F0KNwlTj41OnrRozw-nONXa1oVheg'
+# api_key_token = APIKeyHeader(name = 'Token')
 # @app.get('/protected-route')
 # def protected_oute(token: str = Depends(api_key_token)):
 #     if token != API_KEY_TOKEN:
 #         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
-#     return{'Hello': 'Fastapi'}
+#     return{'hello': 'Fastapi'}
     
 
 # Token con BD esquema inicial
-# api_key_token = APIKeyHeader(name = 'Tokken')
-# def protected_route(token: str = Depends(api_key_token), db: Session = Depends(get_database_session)):
-#     user = db.query(User).join(AccessToken).filter(AccessToken.access_token == token).first()
-#     if user is None:
-#         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    # return{'Hello': 'Fastapi'}
+api_key_token = APIKeyHeader(name = 'Token')
+@app.get('/protected-route')
+def protected_route(token: str = Depends(api_key_token), db: Session = Depends(get_database_session)):
+    user = db.query(User).join(AccessToken).filter(AccessToken.access_token == token).first()
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    return{'hello': 'Fastapi'}
 
 
 # @app.get('/test')
@@ -68,20 +69,25 @@ Base.metadata.create_all(bind=engine)
 def hello_world( user = Depends(verify_access_token) , db: Session = Depends(get_database_session)):
     print('***************************')
     print(user)
-    return { "Hola": "mundo 22"}
+    return { "hello": "mundo 22"}
 
 @app.get('/e_page')
 def page(page: int = Query(1, ge=1, le=20, title='Pagina...'), size: int = Query(5, ge=5, le=20)):
     return {'page': page}
 
 @app.get('/e_phone')
-def phone(phone: str = Query(regex=r"^(\+52)?\d{10}$", example="+52 1234-5678")):
+# def phone(phone: Annotated[str, Query(regex=r"^(\+52)?\d{10}$", example="+52 1234-5678") ]):
+def phone(phone: Annotated[str, Query(pattern=r"^(\+52)?\d{10}$") ]):
     return {'phone': phone}
+
+# @app.get('/ep_phone/{phone}')
+# def phone(phone: str = Path(regex=r"^(\+52)?\d{10}$")):
+#     return {'phone': phone}
 
 @app.get('/ep_phone/{phone}')
-def phone(phone: str = Path(regex=r"^(\+52)?\d{10}$")):
+# def phone(phone: Annotated[ str, Path(regex=r"^(\+52)?\d{10}$")]):
+def phone(phone: Annotated[ str, Path(pattern=r"^(\+52)?\d{10}$")]):
     return {'phone': phone}
-
 
 # templates
 @app.get('/page')
@@ -95,14 +101,14 @@ def pagination(page: Optional[int] = 1, limit: Optional[int] = 10):
     return{'page': page-1, 'limit': limit}
 
 @app.get('/p-task')
-def index(pag:dict=Depends(pagination)):
+def index(pag:dict=Depends(pagination)) -> dict:
     # print(pag.get('limit'))
     return pag
 # -------------------------------------------------------------------
 
 #Path
 
-def validate_token(token: str = Header()): 
+def validate_token(token: str = Header()) -> None: 
     if token != 'TOKEN':
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
@@ -116,11 +122,16 @@ def protected_route(index:int):
 CurrentTaskId = Annotated[int, Depends(validate_token)]
 
 @app.get('/route-protected2')
-def protected_route2(CurrentTaskId, index:int):
+def protected_route2(CurrentTaskId, index:int) -> dict:
     return {'hello': 'FastAPI'}
 
+@app.get('/route-protected5')
+def protected_route5(CurrentTaskId, index:int):
+    return {'hello': 'FastAPI'}
+
+
 @app.get('/route-protected3')
-def protected_route3(CurrentTaskId, index:int):
+def protected_route3(CurrentTaskId, index:int, user: int):
     return {'hello': 'FastAPI'}
 
 @app.get('/route-protected4')

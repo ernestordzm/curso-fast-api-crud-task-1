@@ -87,9 +87,10 @@ def add(task: Task = Body(
 
 @task_router.post('/form-create', status_code=status.HTTP_201_CREATED)
 # def add(task: str = Body()):
-def addForm(task: Task = Depends(Task.as_form), db: Session = Depends(get_database_session)):
+def addForm(task: Task = Depends(Task.as_form), db: Session = Depends(get_database_session)) -> dict:
 
-    return {'tasks': crud.create(task, db=db)}
+    # return {'tasks': crud.create(task, db=db)}
+    return {'tasks': Task.from_orm(crud.create(task, db=db)) }
 
 
 
@@ -155,7 +156,8 @@ def delete(id: int = Path(ge=1), db: Session = Depends(get_database_session)):
 # #--------------------------------------------
 
     # return {'tasks': task_list}
-    return {"tasks": crud.getAll(db)}
+    # return {"tasks": crud.getAll(db)}
+    return {'msj' : 'Ok'}
 
 
 #------------------------------------- TAG
